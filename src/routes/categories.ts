@@ -1,7 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { prisma } from '../lib/prisma'
 import { z } from 'zod'
-import { userInfo } from 'os'
 
 const paramsSchema = z.object({
   id: z.string().uuid()

@@ -14,18 +14,23 @@ model User {
   password   String
   created_at DateTime
   updated_at DateTime
+
+  readBooks          readBooksByUser[]
+  mostReadCategory   mostReadCategory? @relation(fields: [mostReadCategoryId], references: [id])
+  mostReadCategoryId String?
 }
 
 model Book {
-  id          String   @id @default(uuid())
+  id          String            @id @default(uuid())
   name        String
   author      String
-  description String
+  description String?
   picture     String?
-  categoryId  String
   pages       Int
   created_at  DateTime
   updated_at  DateTime
+  categories  CategoryByBook[]
+  readBooks   readBooksByUser[]
 }
 
 model Category {
@@ -33,6 +38,19 @@ model Category {
   name       String
   created_at DateTime
   updated_at DateTime
+
+  books              CategoryByBook[]
+  mostReadCategory   mostReadCategory? @relation(fields: [mostReadCategoryId], references: [id])
+  mostReadCategoryId String?
+}
+
+model CategoryByBook {
+  id         String @id @default(uuid())
+  bookId     String
+  categoryId String
+
+  Book     Book     @relation(fields: [bookId], references: [id])
+  Category Category @relation(fields: [categoryId], references: [id])
 }
 
 model mostReadCategory {
@@ -41,6 +59,9 @@ model mostReadCategory {
   categoryId String
   created_at DateTime
   updated_at DateTime
+
+  Category Category[]
+  User     User[]
 }
 
 model readBooksByUser {
@@ -52,4 +73,7 @@ model readBooksByUser {
   created_at   DateTime
   lastTimeRead DateTime
   isFavorite   Boolean
+
+  user User @relation(fields: [userId], references: [id])
+  book Book @relation(fields: [bookId], references: [id])
 }
