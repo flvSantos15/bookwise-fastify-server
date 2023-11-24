@@ -1,19 +1,20 @@
-import 'dotenv/config'
+// import 'dotenv/config'
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import jwt from '@fastify/jwt'
-import multipart from '@fastify/multipart'
+// import jwt from '@fastify/jwt'
+// import multipart from '@fastify/multipart'
+import { usersRoutes } from './routes/users'
 
-const app = fastify()
+const app = fastify({
+  logger: true
+})
 
 app.register(cors, {
   origin: true
 })
 
-app
-  .listen({
-    port: 3333
-  })
-  .then(() => {
-    console.log('HTTP server running on http://localhost:3333')
-  })
+app.register(usersRoutes)
+
+app.listen({ port: 3333 }).then(() => {
+  console.log('HTTP server running on http://localhost:3333')
+})
