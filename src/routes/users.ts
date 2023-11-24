@@ -13,7 +13,7 @@ const bodySchema = z.object({
 })
 
 export async function usersRoutes(app: FastifyInstance) {
-  app.get('/users', async (req, res) => {
+  app.get('/users', async () => {
     const users = await prisma.user.findMany()
 
     return users.map((user) => {
@@ -85,7 +85,8 @@ export async function usersRoutes(app: FastifyInstance) {
       data: {
         avatar,
         name,
-        password
+        password,
+        updated_at: new Date()
       }
     })
 
